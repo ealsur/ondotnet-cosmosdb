@@ -22,10 +22,11 @@ namespace episode1
         [HttpGet]
         public async Task<IActionResult> ReadItemAsync(string id)
         {
+            // Using the container to demostrate DI
             ResponseMessage response = await this.container.ReadItemStreamAsync(id, new PartitionKey(id));
-            foreach (string header in response.Headers)
+            foreach (string headerName in response.Headers)
             {
-                Response.Headers.Add(header, response.Headers[header]);
+                Response.Headers.Add(headerName, response.Headers[headerName]);
             }
 
             if (!response.IsSuccessStatusCode)
@@ -40,18 +41,19 @@ namespace episode1
         [HttpPost]
         public async Task<IActionResult> SaveItemAsync(string id)
         {
+            // Using the containerProxy to demostrate DI
             ResponseMessage response = await this.containerProxy.GetMainContainer().CreateItemStreamAsync(HttpContext.Request.Body, new PartitionKey(id));
-            foreach (string header in response.Headers)
+            foreach (string headerName in response.Headers)
             {
-                Response.Headers.Add(header, response.Headers[header]);
+                Response.Headers.Add(headerName, response.Headers[headerName]);
             }
 
             if (!response.IsSuccessStatusCode)
             {
                 return StatusCode((int) response.StatusCode, response.ErrorMessage);
             }
-            
-            return StatusCode(201);
+
+            return StatusCode((int) response.StatusCode);
         }
 
         [Route("/item/readtype/{id}")]
