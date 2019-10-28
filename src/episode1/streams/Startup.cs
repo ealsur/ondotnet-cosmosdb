@@ -26,6 +26,7 @@ namespace episode1
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Fluent builder
             CosmosClient client = new CosmosClientBuilder(this.Configuration.GetConnectionString("Cosmos"))
                     .WithApplicationName("OnDotNetRocks")
                     .WithApplicationRegion(Regions.WestUS2)
@@ -41,7 +42,10 @@ namespace episode1
                     // })
                     .Build();
 
-            services.AddSingleton(client);            
+            services.AddSingleton(client);
+
+            IContainerProxy containerProxy = new ContainerProxy(client);
+            services.AddSingleton<IContainerProxy>(containerProxy);
             services.AddControllers();
         }
 

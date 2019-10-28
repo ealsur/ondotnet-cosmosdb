@@ -9,16 +9,25 @@ namespace episode1
     public class ItemController : Controller
     {
         private readonly Container container;
-        public ItemController(CosmosClient client)
+        private readonly IContainerProxy containerProxy;
+        public ItemController(
+            CosmosClient client,
+            IContainerProxy containerProxy)
         {
             this.container = client.GetContainer("OnDotNet", "episode1");
+            this.containerProxy = containerProxy;
         }
 
         [Route("/item/read/{id}")]
         [HttpGet]
         public async Task<IActionResult> ReadItemAsync(string id)
         {
-            ResponseMessage response = await container.ReadItemStreamAsync(id, new PartitionKey(id));
+            ResponseMessage response = await this.container.ReadItemStreamAsync(id, new PartitionKey(id));
+            foreach (string header in response.Headers)
+            {
+                Response.Headers.Add(header, response.Headers[header]);
+            }
+
             if (!response.IsSuccessStatusCode)
             {
                 return StatusCode((int) response.StatusCode, response.ErrorMessage);
@@ -31,12 +40,17 @@ namespace episode1
         [HttpPost]
         public async Task<IActionResult> SaveItemAsync(string id)
         {
-            ResponseMessage response = await container.CreateItemStreamAsync(HttpContext.Request.Body, new PartitionKey(id));
+            ResponseMessage response = await this.containerProxy.GetMainContainer().CreateItemStreamAsync(HttpContext.Request.Body, new PartitionKey(id));
+            foreach (string header in response.Headers)
+            {
+                Response.Headers.Add(header, response.Headers[header]);
+            }
+
             if (!response.IsSuccessStatusCode)
             {
                 return StatusCode((int) response.StatusCode, response.ErrorMessage);
             }
-
+            
             return StatusCode(201);
         }
 
