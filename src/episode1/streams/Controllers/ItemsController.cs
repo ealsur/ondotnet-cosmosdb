@@ -55,20 +55,5 @@ namespace episode1
 
             return StatusCode((int) response.StatusCode);
         }
-
-        [Route("/item/readtype/{id}")]
-        [HttpGet]
-        public async Task<IActionResult> ReadTypedItemAsync(string id)
-        {
-            try
-            {
-                Model response = await container.ReadItemAsync<Model>(id, new PartitionKey(id));
-                return new OkObjectResult(response.DescriptiveTitle);
-            }
-            catch (CosmosException exception)
-            {
-                return StatusCode((int) exception.StatusCode, exception.Message);
-            }
-        }
     }
 }

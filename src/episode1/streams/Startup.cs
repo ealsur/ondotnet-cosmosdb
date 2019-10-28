@@ -30,16 +30,10 @@ namespace episode1
             CosmosClient client = new CosmosClientBuilder(this.Configuration.GetConnectionString("Cosmos"))
                     .WithApplicationName("OnDotNetRocks")
                     .WithApplicationRegion(Regions.WestUS2)
-                    .WithCustomSerializer(new TextJsonSerializer())
                     .WithConsistencyLevel(ConsistencyLevel.Session)
                     .WithThrottlingRetryOptions(
                         TimeSpan.FromSeconds(10),
                         5)
-                    // .WithSerializerOptions(new CosmosSerializationOptions(){
-                    //     IgnoreNullValues = true,
-                    //     Indented = false,
-                    //     PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    // })
                     .Build();
 
             services.AddSingleton(client);
