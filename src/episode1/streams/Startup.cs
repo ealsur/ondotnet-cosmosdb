@@ -29,12 +29,24 @@ namespace episode1
             // Fluent builder
             CosmosClient client = new CosmosClientBuilder(this.Configuration.GetConnectionString("Cosmos"))
                     .WithApplicationName("OnDotNetRocks")
+                    .WithConnectionModeGateway()
                     .WithApplicationRegion(Regions.WestUS2)
                     .WithConsistencyLevel(ConsistencyLevel.Session)
                     .WithThrottlingRetryOptions(
                         TimeSpan.FromSeconds(10),
                         5)
                     .Build();
+
+            // Similar non-fluent initialization
+            // CosmosClient client = new CosmosClient(this.Configuration.GetConnectionString("Cosmos"), 
+            //     new CosmosClientOptions(){
+            //        ApplicationName = "OnDotNetRocks",
+            //        ApplicationRegion = Regions.WestUS2,
+            //        MaxRetryAttemptsOnRateLimitedRequests = 5,
+            //        MaxRetryWaitTimeOnRateLimitedRequests = TimeSpan.FromSeconds(10),
+            //        ConnectionMode = ConnectionMode.Gateway,
+            //        ConsistencyLevel = ConsistencyLevel.Session
+            //     });
 
             services.AddSingleton(client);
 
