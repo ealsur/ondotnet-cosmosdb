@@ -11,7 +11,7 @@ namespace episode1
         static async Task Main(string[] args)
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
             await Program.WithCustomSerializerAsync(configuration);
