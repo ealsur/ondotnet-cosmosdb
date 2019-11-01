@@ -25,8 +25,18 @@ namespace episode2
 
             // Parse command line arguments
             ParserResult<CommandLineOptions> result = Parser.Default.ParseArguments<CommandLineOptions>(args);
-            await result.MapResult(async options => await Program.ParseOptionsAndRunAsync(options, client), _ => Task.CompletedTask);
-            Console.WriteLine("Job's done.");
+            try
+            {
+                await result.MapResult(async options => await Program.ParseOptionsAndRunAsync(options, client), _ => Task.CompletedTask);
+                Console.WriteLine("Job's done.");
+            }
+            catch(ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.WriteLine("Options: --processor \"<name>\": Starts a processor instance with a particular name.");
+                Console.WriteLine("         --estimator: Starts an estimator to watch for changes.");
+                Console.WriteLine("         --writer <number>: Starts a writer for a fixed number of documents.");
+            }
         }
 
         private static Task ParseOptionsAndRunAsync(CommandLineOptions options, CosmosClient client)
@@ -137,12 +147,12 @@ namespace episode2
             validArguments |= (options.DocumentWriter > 0 && !string.IsNullOrEmpty(options.Processor));
             if (!validArguments)
             {
-                throw new ArgumentException("Only one argument mode is allowed. Either use --processor, --writer, or --estimator.");
+                throw new ArgumentException("Only one argument mode is allowed.");
             }
 
             if (!options.Estimator && string.IsNullOrEmpty(options.Processor) && options.DocumentWriter == 0)
             {
-                throw new ArgumentException("At least one argument mode should be set. Use --help for options.");
+                throw new ArgumentException("At least one argument mode should be set.");
             }
         }
     }
