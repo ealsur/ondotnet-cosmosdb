@@ -57,8 +57,8 @@ namespace episode2
 
         private static async Task StartProcessorAsync(CosmosClient client, string instanceName)
         {
-            Container container = client.GetContainer("episode2", "items");
-            Container leasesContainer = client.GetContainer("episode2", "leases");
+            Container container = client.GetContainer("OnDotNet", "changefeed-items");
+            Container leasesContainer = client.GetContainer("OnDotNet", "changefeed-leases");
 
             ChangeFeedProcessor processor = container.GetChangeFeedProcessorBuilder<Model>("OnDotNet", Program.ProcessChangesAsync)
                 .WithInstanceName(instanceName)
@@ -88,8 +88,8 @@ namespace episode2
 
         private static async Task StartEstimatorAsync(CosmosClient client)
         {
-            Container container = client.GetContainer("episode2", "items");
-            Container leasesContainer = client.GetContainer("episode2", "leases");
+            Container container = client.GetContainer("OnDotNet", "changefeed-items");
+            Container leasesContainer = client.GetContainer("OnDotNet", "changefeed-leases");
 
             ChangeFeedProcessor processor = container.GetChangeFeedEstimatorBuilder("OnDotNet", Program.ShowEstimation, TimeSpan.FromSeconds(1))
                 .WithLeaseContainer(leasesContainer)
@@ -115,11 +115,12 @@ namespace episode2
         private static Task StartWriterAsync(CosmosClient client, int documentsToWrite)
         {
             List<Task> tasks = new List<Task>();
-            Container container = client.GetContainer("episode2", "items");
+            Container container = client.GetContainer("OnDotNet", "changefeed-items");
             Console.WriteLine($"Generating {documentsToWrite} items to insert...");
             foreach(Model item in new Bogus.Faker<Model>()
                                         .StrictMode(true)
                                         .RuleFor(o => o.id, f => Guid.NewGuid().ToString())
+                                        .RuleFor(o => o.partitionKey, f => Guid.NewGuid().ToString())
                                         .RuleFor(o => o.userName, f => f.Internet.UserName())
                                         .RuleFor(o => o.email, f => f.Internet.Email())
                                         .RuleFor(o => o.age, f => f.Random.Number(20, 80))
@@ -134,9 +135,9 @@ namespace episode2
 
         private static async Task InitializeContainersAsync(CosmosClient cosmosClient)
         {
-            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync("episode2");
-            await database.CreateContainerIfNotExistsAsync(id: "items", partitionKeyPath: "/partitionKey", throughput: 5000);
-            await database.CreateContainerIfNotExistsAsync(id: "leases", partitionKeyPath: "/id");
+            Database database = await cosmosClient.CreateDatabaseIfNotExistsAsync("OnDotNet");
+            await database.CreateContainerIfNotExistsAsync(id: "changefeed-items", partitionKeyPath: "/partitionKey", throughput: 10000);
+            await database.CreateContainerIfNotExistsAsync(id: "changefeed-leases", partitionKeyPath: "/id");
         }
 
         private static void ValidateArguments(CommandLineOptions options)

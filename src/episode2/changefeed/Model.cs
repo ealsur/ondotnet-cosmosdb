@@ -6,6 +6,7 @@ namespace episode2
     public class Model
     {
         public string id {get;set;}
+        public string partitionKey {get;set;}
         public string userName {get;set;}
         public string email {get;set;}
 
