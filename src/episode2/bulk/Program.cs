@@ -35,6 +35,8 @@
                     .WithBulkExecution(isBulkEnabled)
                     .Build();
 
+            // new CosmosClientOptions() { AllowBulkExecution = isBulkEnabled}
+
             Database database = await Program.InitializeContainerAsync(cosmosClient, containerName);
 
             try
