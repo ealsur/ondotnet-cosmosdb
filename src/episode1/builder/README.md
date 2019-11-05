@@ -1,6 +1,6 @@
 # Episode 1 - Builders
 
-[<- Back to root](../../README.md)
+[<- Back to root](../../../README.md)
 
 The Azure Cosmos DB .NET SDK lets you use the Fluent or Builder pattern to [create the `CosmosClient`](./Program.cs#L18) instance:
 
