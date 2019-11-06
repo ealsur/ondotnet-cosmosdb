@@ -2,7 +2,7 @@
 
 [<- Back to root](../../../README.md)
 
-This sample covers using the [Change Feed Processor](https://docs.microsoft.com/azure/cosmos-db/change-feed-processor) to create a reactive application that will print changes as they happen in the monitored container through a [Delegate](./Program.cs#L76).
+This example covers using the [Change Feed Processor](https://docs.microsoft.com/azure/cosmos-db/change-feed-processor) to create a reactive application that will print changes as they happen in the monitored container through a [Delegate](./Program.cs#L76).
 
 ## Starting a Processing
 
