@@ -14,6 +14,8 @@ namespace episode1
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
+            await Program.InitializeContainers(configuration);
+
             await Program.WithCustomSerializerAsync(configuration);
             await Program.WithSerializerOptionsAsync(configuration);
         }
@@ -28,7 +30,7 @@ namespace episode1
             ModelTextJson model = new ModelTextJson()
             {
                 TheIdentifier = Guid.NewGuid().ToString(),
-                DescriptiveTitle = "This is some amazing descriptive title!"
+                DescriptiveTitle = "With custom System.Text.Json serializer!"
             };
 
             Container container = client.GetContainer("OnDotNet", "episode1serializer");
@@ -50,13 +52,21 @@ namespace episode1
             ModelJsonNet model = new ModelJsonNet()
             {
                 Id = Guid.NewGuid().ToString(),
-                DescriptiveTitle = "Show me some descriptive text!"
+                DescriptiveTitle = "With customized JSON.Net!"
             };
 
             Container container = client.GetContainer("OnDotNet", "episode1serializer");
             ItemResponse<ModelJsonNet> createdItem = await container.CreateItemAsync(model);
 
             Console.WriteLine($"Used serializer options to create item {createdItem.Resource.Id}");
+        }
+
+        static async Task InitializeContainers(IConfiguration configuration)
+        {
+            CosmosClient client = new CosmosClientBuilder(configuration.GetConnectionString("Cosmos"))
+                .Build();
+            Database database = await client.CreateDatabaseIfNotExistsAsync("OnDotNet");
+            await database.CreateContainerIfNotExistsAsync("episode1serializer", "/id");
         }
     }
 }
