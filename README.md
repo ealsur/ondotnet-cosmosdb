@@ -12,7 +12,7 @@ During episode 1, we'll cover:
 * Learn how to [customize the serialization process](./src/episode1/customserializer/) by the options in the built-in serializer or introduce your own custom serializer implementation.
 * Use the [Stream APIs](./src/episode1/streams/) in your middleware applications to optimize throughput and follow best practices by leveraging [NET Core Dependency Injection](./src/episode1/streams/startup.cs).
 
-[![Watch the On Dotnet episode](http://img.youtube.com/vi/uFWWkzYL7tA /0.jpg)](http://www.youtube.com/watch?v=uFWWkzYL7tA "On dotnet episode")
+[![Watch the On Dotnet episode](http://img.youtube.com/vi/uFWWkzYL7tA/0.jpg)](http://www.youtube.com/watch?v=uFWWkzYL7tA "On dotnet episode")
 
 ## Episode 2
 
