@@ -30,7 +30,7 @@ namespace episode2
             
             const string showName = "OnDotNet";
 
-            Console.WriteLine("Creating show and episodes...");
+            Console.WriteLine("Creating show and episodes, press ENTER to continue...");
             Console.ReadLine();
             TransactionalBatchResponse createShowResponse = await container.CreateTransactionalBatch(new PartitionKey(showName))
                 .CreateItem<Show>(Show.Create(showName))
@@ -41,7 +41,7 @@ namespace episode2
 
             using (createShowResponse)
             {
-                if (createShowResponse.StatusCode != HttpStatusCode.OK)
+                if (!createShowResponse.IsSuccessStatusCode)
                 {
                     // Log and handle failure
                     LogFailure(createShowResponse);
@@ -61,7 +61,7 @@ namespace episode2
             Console.WriteLine($"Current Show LastUpdate {theShow.LastUpdated}");
             await Task.Delay(2000);
             theShow.LastUpdated = DateTime.UtcNow;
-            Console.WriteLine($"Trying to update Show with date {theShow.LastUpdated}");
+            Console.WriteLine($"Trying to update Show with date {theShow.LastUpdated}, press ENTER to continue...");
             Console.ReadLine();
             TransactionalBatchResponse createDuplicatedShow = await container.CreateTransactionalBatch(new PartitionKey(showName))
                 .ReplaceItem<Show>(theShow.Id, theShow)
@@ -78,7 +78,7 @@ namespace episode2
 
             Show storedShow = await container.ReadItemAsync<Show>(theShow.Id, new PartitionKey(showName));
             Console.WriteLine($"Stored Show date after batch fail: {storedShow.LastUpdated}");
-            Console.WriteLine("Updating show and episodes...");
+            Console.WriteLine("Updating show and episodes, press ENTER to continue...");
             Console.ReadLine();
             theShow.LastUpdated = DateTime.UtcNow;
             episode1.AirDate = DateTime.UtcNow.AddDays(7);
@@ -92,7 +92,7 @@ namespace episode2
 
             using (updateAirDate)
             {
-                if (updateAirDate.StatusCode != HttpStatusCode.OK)
+                if (!updateAirDate.IsSuccessStatusCode)
                 {
                     // Log and handle failure
                     LogFailure(updateAirDate);
