@@ -55,17 +55,6 @@ namespace episode1
             Stream stream,
             JsonSerializerOptions jsonSerializerOptions)
         {
-            MemoryStream memoryStream = stream as MemoryStream;
-            if (stream is MemoryStream)
-            {
-                if (memoryStream.TryGetBuffer(out ArraySegment<byte> buffer))
-                {
-                    return JsonSerializer.Deserialize<T>(buffer, jsonSerializerOptions);
-                }
-
-                return JsonSerializer.Deserialize<T>(memoryStream.ToArray(), jsonSerializerOptions);
-            }
-
             int written = 0;
             byte[] rented = null;
 
