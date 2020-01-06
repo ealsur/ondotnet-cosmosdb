@@ -23,7 +23,8 @@ namespace episode1
         {
             using (stream)
             {
-                if (stream.Length == 0)
+                if (stream.CanSeek
+                    && stream.Length == 0)
                 {
                     return default(T);
                 }
