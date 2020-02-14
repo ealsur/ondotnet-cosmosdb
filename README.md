@@ -21,8 +21,8 @@ Watch the recording! 👇
 During episode 2, we'll cover:
 
 * Learn to consume the [Change Feed](./src/episode2/changefeed/) and create reactive applications that listen to changes in Cosmos containers.
-* Use the [Transactional Batch](./src/episode2/batch/) to create groups of operations that need to either succeed or fail as a single transaction.
-* Leverage the [Bulk support](./src/episode2/bulk/) to optimize throughput for mass ingestion operations.
+* Use the [Transactional Batch](./src/episode2/batch/) to create groups of operations that need to either succeed or fail as a single transaction. For more information about Transactional Batch, check our [devblog](https://devblogs.microsoft.com/cosmosdb/introducing-transactionalbatch-in-the-net-sdk/).
+* Leverage the [Bulk support](./src/episode2/bulk/) to optimize throughput for mass ingestion operations. For more information about Bulk, check our [devblog](https://devblogs.microsoft.com/cosmosdb/introducing-bulk-support-in-the-net-sdk/).
 
 Watch the recording! 👇
 
