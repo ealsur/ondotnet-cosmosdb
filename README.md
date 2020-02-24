@@ -10,8 +10,7 @@ During episode 1, we'll cover:
 
 * Take advantage of the [Fluent builders](./src/episode1/builder/) to create your `CosmosClient` instances and define your Cosmos containers.
 * Learn how to [customize the serialization process](./src/episode1/customserializer/) by the options in the built-in serializer or introduce your own custom serializer implementation.
-* Use the [Stream APIs](./src/episode1/streams/) in your middleware applications to optimize throughput and follow best practices by leveraging [NET Core Dependency Injection](./src/episode1/streams/startup.cs).
-
+* Use the [Stream APIs](./src/episode1/streams/) in your middleware applications to optimize throughput and follow best practices by leveraging [NET Core Dependency Injection](./src/episode1/streams/Startup.cs).
 Watch the recording! 👇
 
 [![Watch the On Dotnet episode](http://img.youtube.com/vi/uFWWkzYL7tA/0.jpg)](http://www.youtube.com/watch?v=uFWWkzYL7tA "On dotnet episode")
